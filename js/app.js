@@ -48,6 +48,8 @@
     var $tableContent = new DOM('[data-js="content"]')
     var $errorDiv = new DOM('[data-js="errors"]')
 
+    var $deleteBtn = new DOM('[data-js="delete"]')
+
     function getCompanyData() {
       ajax.open('GET', 'company.json');
       ajax.send();
@@ -101,12 +103,16 @@
       var tdYear = document.createElement('td')
       var tdPlate = document.createElement('td')
       var tdColor = document.createElement('td')
+      var tdDelete = document.createElement('td')
 
       var img = document.createElement('img')
       var brandTxt = document.createTextNode(values.brand)
       var yearTxt = document.createTextNode(values.year)
       var plateTxt = document.createTextNode(values.plate)
       var colorTxt = document.createTextNode(values.color)
+      var deleteButton = document.createElement('button')
+      deleteButton.setAttribute('data-js', 'delete-button')
+      deleteButton.textContent = 'Remover'
 
       img.src = values.image
 
@@ -115,13 +121,17 @@
       tdYear.appendChild(yearTxt)
       tdPlate.appendChild(plateTxt)
       tdColor.appendChild(colorTxt)
+      tdDelete.appendChild(deleteButton)
 
       tr.appendChild(tdImage)
       tr.appendChild(tdBrand)
       tr.appendChild(tdYear)
       tr.appendChild(tdPlate)
       tr.appendChild(tdColor)
-      
+      tr.appendChild(tdDelete)
+
+      deleteButton.addEventListener('click', deleteColumn);
+
       fragment.appendChild(tr)
       $tableContent.get()[0].appendChild(fragment)
     }
@@ -177,15 +187,24 @@
     var clearErrorMessages = function clearErrorMessages(){
       var errorDiv = $errorDiv.get()[0]
       while (errorDiv.firstChild) {
-         errorDiv.removeChild(errorDiv.firstChild);
+        errorDiv.removeChild(errorDiv.firstChild);
       }
+    }
+
+    var deleteColumn = function deleteColumn(){
+      $tableContent.get()[0].removeChild(this.parentNode.parentNode)
     }
 
     $registerBtn.get()[0].addEventListener('click', registerCar, false)
 
     getCompanyData()
+
+    return {
+      deleteColumn: deleteColumn
+    }
   }
 
+  window.app = app
   app()
 
 })(window.DOM);
