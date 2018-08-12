@@ -198,13 +198,8 @@
     $registerBtn.get()[0].addEventListener('click', registerCar, false)
 
     getCompanyData()
-
-    return {
-      deleteColumn: deleteColumn
-    }
   }
 
-  window.app = app
   app()
 
 })(window.DOM);
