@@ -125,6 +125,8 @@
             var tdColor = document.createElement('td')
             var tdDelete = document.createElement('td')
 
+            tdPlate.className = 'plate'
+
             var img = document.createElement('img')
             var brandTxt = document.createTextNode(car.brandModel)
             var yearTxt = document.createTextNode(car.year)
@@ -223,6 +225,13 @@
 
     var deleteColumn = function deleteColumn(){
       $tableContent.get()[0].removeChild(this.parentNode.parentNode)
+
+      var carPlate = this.parentNode.parentNode.getElementsByClassName('plate')[0].outerText
+
+      var ajax = new XMLHttpRequest()
+      ajax.open('DELETE', 'http://localhost:3000/car')
+      ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+      ajax.send('plate=' + carPlate);
     }
 
     $registerBtn.get()[0].addEventListener('click', registerCar, false)
